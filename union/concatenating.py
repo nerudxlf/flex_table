@@ -13,5 +13,5 @@ class ConObjects(Boss):
             result = pd.concat(self._read_csv())
         else:
             return 0
-        result.to_excel(f"result_data{int(random.random()*100)}.xlsx", index=None)
+        result.to_excel(f"result_data{int(random.random() * 100)}.xlsx", index=None)
         return 1
