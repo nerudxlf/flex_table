@@ -1,19 +1,17 @@
+import random
+
 import pandas as pd
 
+from union.boss import Boss
 
-class ConObjects:
-    def __init__(self, *args):
-        self.arr_table_path = list(args)
 
-    def __read_csv(self) -> list:
-        print(self.arr_table_path)
-        frames = []
-        for i in self.arr_table_path:
-            df = pd.read_excel(i)
-            frames.append(df)
-        return frames
-
+class ConObjects(Boss):
     def concat_frames(self) -> int:
-        result = pd.concat(self.__read_csv())
-        result.to_excel("result_data.xlsx", index=None)
+        if self.expansion == "xlsx" or self.expansion == "xls":
+            result = pd.concat(self._read_excel())
+        elif self.expansion == "csv":
+            result = pd.concat(self._read_csv())
+        else:
+            return 0
+        result.to_excel(f"result_data{int(random.random()*100)}.xlsx", index=None)
         return 1
