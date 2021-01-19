@@ -7,6 +7,10 @@ from union.boss import Boss
 
 class ConObjects(Boss):
     def concat_frames(self) -> int:
+        """
+        Объеденяет 2 и более таблицы
+        :return: возвращает 1 в случае успеха 0 в случае неудачи
+        """
         if self.expansion == "xlsx" or self.expansion == "xls":
             result = pd.concat(self._read_excel())
         elif self.expansion == "csv":

@@ -4,7 +4,13 @@ from union.boss import Boss
 
 
 class JoinObj(Boss):
-    def left_join(self, *args) -> int:
+    def join_outer_is_not(self, left_name: str, right_name: str) -> int:
+        """
+        объеденяет 2 таблицы по методу outer is not
+        :param left_name: название поля левой таблицы для объеденения
+        :param right_name: название поля правой таблицы для объеденения
+        :return:
+        """
         if self.expansion == "xlsx" or self.expansion == "xls":
             left_right = self._read_excel()
         elif self.expansion == "csv":
@@ -13,14 +19,19 @@ class JoinObj(Boss):
             return 0
         left = left_right[0]
         right = left_right[1]
-        left.rename(columns={' Volume': 'Volume'}, inplace=True)  # тест
-        left['Volume'] = left['Volume'].astype(str)
-        right['Volume'] = right['Volume'].astype(str)
-        result = pd.concat([left, right], axis=1, join="inner")
-        result.to_excel("result_data.xlsx", index=None)
+        result_inner = pd.merge(left, right, left_on=left_name, right_on=right_name)
+        result_outher = pd.merge(left, right, left_on=left_name, right_on=right_name, how='outer')
+        result = result_outher[~result_outher.index.isin(result_inner.index)]
+        result.to_excel("result_outher.xlsx", index=None)
         return 1
 
-    def right_join(self, *args) -> int:
+    def join_inner(self, left_name: str, right_name: str) -> int:
+        """
+        объеденяет 2 таблицы по методу join inner
+        :param left_name: название поля левой таблицы для объеденения
+        :param right_name: название поля правой таблицы для объеденения
+        :return:
+        """
         if self.expansion == "xlsx" or self.expansion == "xls":
             left_right = self._read_excel()
         elif self.expansion == "csv":
@@ -29,7 +40,22 @@ class JoinObj(Boss):
             return 0
         left = left_right[0]
         right = left_right[1]
+        result_inner = pd.merge(left, right, left_on=left_name, right_on=right_name)
+        result_inner.to_excel("result_inner.xlsx", index=None)
 
-        result = pd.merge(left, right, how="right", on=list(args))
-        result.to_excel("result_data.xlsx", index=None)
-        return 1
+    def not_unique(self):
+        """
+        Из исходной таблцы получаем таблицу с неуникальными значениями
+        :return:
+        """
+        if self.expansion == "xlsx" or self.expansion == "xls":
+            left_right = self._read_excel()
+        elif self.expansion == "csv":
+            left_right = self._read_csv()
+        else:
+            return 0
+        left = left_right[0]
+        right = left_right[1]
+        df = pd.concat([left, right])
+        df = df.loc[df.duplicated(keep=False), :]
+        df.to_excel("not_unique.xlsx", index=None)

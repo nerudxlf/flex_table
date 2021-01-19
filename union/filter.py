@@ -1,12 +1,14 @@
+import random
+
 import pandas as pd
 
 from union.boss import Boss
 
 
-class DelDup(Boss):
-    def delete(self):
+class GetTableByFilter(Boss):
+    def get_new_table(self, name: str):
         """
-        Удаляем все повторяющиеся значения в таблице
+        :param name:
         :return:
         """
         if self.expansion == "xlsx" or self.expansion == "xls":
@@ -15,5 +17,5 @@ class DelDup(Boss):
             df = self._read_csv()[0]
         else:
             return 0
-        df = df.drop_duplicates()
-        df.to_excel("new_data.xlsx", index=None)
+        df = df.filter(items=[name])
+        df.to_excel(f"new_table_{name}.xlsx", index=None)
