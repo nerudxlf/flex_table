@@ -15,5 +15,5 @@ class DelDup(Boss):
             df = self._read_csv()[0]
         else:
             return 0
-        df = df.drop_duplicates()
+        df = df.drop_duplicates(keep=False)
         df.to_excel("new_data.xlsx", index=None)

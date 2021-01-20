@@ -6,6 +6,8 @@ from union.join import JoinObj
 from convert.csv_to_xls import to_xls
 import PySimpleGUI as sg
 
+from union.upgrade import UpgradeTable
+
 
 def parse_type(val: list) -> str:
     """
@@ -40,7 +42,6 @@ def main():
                 pass
             else:
                 con = ConObjects(get_type, *val)
-                print(con)
                 if con == 0:
                     sg.popup_ok("Файл не найден")
                 con.concat_frames()
@@ -54,6 +55,16 @@ def main():
                 if j == 0:
                     sg.popup_ok("Файл не найден")
                 j.join_outer_is_not(values[2], values[3])
+        if event == '-INNER KEY-' and values[0] and values[1] and values[2] and values[3]:
+            val = [values[0], values[1]]
+            get_type = parse_type(val)
+            if get_type == '0':
+                pass
+            else:
+                j = ConObjects(get_type, *val)
+                if j == 0:
+                    sg.popup_ok("Файл не найден")
+                j.concat_frames_inner(values[2], values[3])
         if event == '-INNER JOIN-' and values[0] and values[1] and values[2] and values[3]:
             val = [values[0], values[1]]
             get_type = parse_type(val)
@@ -78,6 +89,12 @@ def main():
             if not new_table:
                 sg.popup_ok("Файл не найден")
             new_table.get_new_table(values[2])
+        if event == '-ONLY LETTERS-' and values[0] and values[2]:
+            get_type = values[0].split('.')[1]
+            new_table = UpgradeTable(get_type, values[0])
+            if not new_table:
+                sg.popup_ok("Файл не найден")
+            new_table.only_letters(values[2])
         if event == '-NOT UNIQUE-' and values[0] and values[1]:
             val = [values[0], values[1]]
             get_type = parse_type(val)
