@@ -8,7 +8,8 @@ from union.boss import Boss
 class GetTableByFilter(Boss):
     def get_new_table(self, name: str):
         """
-        :param name:
+        Применяет к таблице фильтер
+        :param name: название столбца для фильтрации
         :return:
         """
         if self.expansion == "xlsx" or self.expansion == "xls":

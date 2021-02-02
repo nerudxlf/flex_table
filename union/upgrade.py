@@ -7,6 +7,11 @@ import pandas as pd
 
 class UpgradeTable(Boss):
     def only_letters(self, name):
+        """
+        Удаляет из столбцов все симовлы кроме букв
+        :param name: название столбца
+        :return:
+        """
         if self.expansion == "xlsx" or self.expansion == "xls":
             df = self._read_excel()[0]
         elif self.expansion == "csv":

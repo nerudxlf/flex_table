@@ -77,6 +77,12 @@ def main():
                 j.join_inner(values[2], values[3])
         if event == '-TO CSV-' and values[0]:
             to_xls(values[0])
+        if event == '-FIO-' and values[0]:
+            get_type = values[0].split('.')[1]
+            df = ConObjects(get_type, values[0])
+            if not df:
+                sg.popup_ok("Файл не найден")
+            df.contact_fio()
         if event == '-DELETE-' and values[0]:
             get_type = values[0].split('.')[1]
             delete_string = DelDup(get_type, values[0])

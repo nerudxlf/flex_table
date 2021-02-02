@@ -5,9 +5,10 @@ def get_menu():
     sg.theme('DarkAmber')
     layout_start = [
         [sg.Text('Выберите функцию')],
-        [sg.RButton('Объеденить таблицы', key='-UNION-')],
-        [sg.RButton('Объеденить 2 таблицы и удалить повторяющиеся', key='-OUTER JOIN-')],
-        [sg.RButton('Объеденить 2 таблицы по ключам', key='-INNER KEY-')],
+        [sg.RButton('Из полей ФАМИЛИЯ ИМЯ ОТЧЕСТВО сдалть одно поле ФАМИЛИЯ И.О.', key='-FIO-')],
+        [sg.RButton('Объединить таблицы', key='-UNION-')],
+        [sg.RButton('Объединить 2 таблицы и удалить повторяющиеся', key='-OUTER JOIN-')],
+        [sg.RButton('Объединить 2 таблицы по ключам', key='-INNER KEY-')],
         [sg.RButton('Выбрать только повторяющиеся строки', key='-INNER JOIN-')],
         [sg.RButton('Конвертировать csv в xlsx', key='-TO CSV-')],
         [sg.RButton('Удалить повторяющиеся строки', key='-DELETE-')],
